@@ -1,8 +1,8 @@
 const router = require('express').Router()
 const glob = require('glob')
 
-glob.sync(`./routes/*.js`).forEach(async routeFile => {
-    const FileReplace = routeFile.replace('./routes/', '').replace('.js', '')
+glob.sync(`./src/routes/*.js`).forEach(async routeFile => {
+    const FileReplace = routeFile.replace('./src/routes/', '').replace('.js', '')
     if(FileReplace !== 'index') router.use(`/${FileReplace}`, require(`./${FileReplace}`))
 })
 
