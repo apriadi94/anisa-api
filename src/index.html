@@ -1,0 +1,27 @@
+<h1>Sistm Berjalan</h1>
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+<script>
+    let jumlahReload = 0;
+    function reloadData(){
+        console.log(jumlahReload)
+        axios({
+            method : 'get',
+            url : `http://localhost:8585/api/notif/push`,
+            headers : {
+                Accept : 'aplication/json'
+            }
+        }).then(res => {
+            jumlahReload++
+            setTimeout(() => reloadData(), 3000)
+            if(jumlahReload > 10){
+                location.reload()
+            }
+        }).catch(err => {
+            setTimeout(() => location.reload(), 10000)
+        })
+    }
+
+    reloadData()
+</script>
