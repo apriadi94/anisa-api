@@ -1,8 +1,9 @@
 const perkaraService = require('../../service/perkaraService')
+const moment = require('moment')
 
 const Controller = () => {
     const GetData = (req, res) => {
-        const {tgl_sidang, user} = req.query
+        const {tgl_sidang = moment().format('YYYY-MM-DD'), user} = req.query
         perkaraService.getJadwalsidang(tgl_sidang)
             .then(result => {
                 const NewData = user ? 
