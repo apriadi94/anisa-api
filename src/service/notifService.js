@@ -578,6 +578,7 @@ const checkSidangBesok = async () => {
     await checkSidangBesokHakim()
     await checkSidangBesokPanitera()
     await checkSidangBesokJurusita()
+    await checkSidangBesokPihak()
     return true
 }
 
@@ -642,6 +643,26 @@ const checkSidangBesokJurusita = async () => {
     return true
 }
 
+const checkSidangBesokPihak = async () => {
+    const besok = moment(new Date, 'YYYY-MM-DD').add(1, 'days').format('YYYY-MM-DD')
+    const dataSidang = await perkaraService.getJadwalsidang(besok)
+
+    const arrayDataSidang = dataSidang.map(item => {
+
+        const arrayPenerimaNotif = [item.perkara_id]
+        return {
+            perkara_id : item.perkara_id,
+            nomor_perkara : item.perkara.nomor_perkara,
+            penerima_notif : arrayPenerimaNotif
+        }
+    })
+
+    for(const perkara of arrayDataSidang){
+        await inputNotif('pihak', perkara, perkara.penerima_notif, 'Sidang Besok')
+    }
+    return true
+}
+
 const checkTundaanBelum = async () => {
     const data = await perkaraService.statusSidang()
         const dataStatusSidang = JSON.parse(data)
@@ -663,7 +684,7 @@ const inputNotif = async (otoritas = null, data, arrayPenerimaNotif, tentang) =>
                 user_id : userData.id,
                 perkara_id : data.perkara_id,
                 tentang : `${tentang} ${data.perkara_id}`,
-                deskripsi : `Peringatan status sidang belum diisi nomor perkara ${data.nomor_perkara}`,
+                deskripsi : `Sidang besok untuk nomor perkara ${data.nomor_perkara}`,
                 token_notif : userData.token_notif
             }
         })
