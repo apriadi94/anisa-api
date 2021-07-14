@@ -36,11 +36,11 @@ const kirimKePenerima = async (dataPenerima) => {
 
     const headers = {
         "Content-Type": "application/json; charset=utf-8",
-        "Authorization": "Basic YzNjOTI2NTAtMTlhMS00MGRhLWJkOGEtMDhkMDFlZDQ4Nzcw"
+        "Authorization": `Basic ${process.env.ONESIGNAL_AUTH}`
     };
 
     var data = {
-        app_id: "f240c6fd-ada1-4d95-9e40-a2acd5b7f563",
+        app_id: process.env.ONESIGNAL_APP_ID,
         headings : {"en" : dataPenerima.tentang},
         contents: {"en": dataPenerima.deskripsi},
         channel_for_external_user_ids: "push",
